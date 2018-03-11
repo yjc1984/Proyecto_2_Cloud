@@ -5,3 +5,6 @@ from .models import *
 admin.site.register(UsuarioCustom)
 admin.site.register(Concurso)
 admin.site.register(AudioLocutor)
+admin.site.register(Locutor)
+admin.site.register(ListaLocutores)
+admin.site.register(EmpresaRol)
