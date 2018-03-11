@@ -1,0 +1,19 @@
+{% extends 'base_layout.html' %}
+<!-- Al hacer extends se hereda el codigo que corresponde al layout y referencio los bloques donde va el codigo
+que quiero para cada template-->
+{% block content%}
+
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  <h1>Ingreso Usuarios Registrados</h1>
+    <form class ='formularios' method='post' action="{% url 'WebConcursos:login' %}">
+       {% csrf_token %}
+       {{formulario_ingreso}}
+       <p><input class="btn btn-primary my-2" type='submit' value='Ingresar'/></p>
+   
+    </form>
+    {% if messages %}
+	    {% for message in messages %}
+	    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+	    {% endfor %}
+	{% endif %}
+{% endblock%}

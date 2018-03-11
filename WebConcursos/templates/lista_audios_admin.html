@@ -1,0 +1,31 @@
+{% extends 'base_layout.html' %}
+
+{% block content%}
+{% load staticfiles  %}
+
+<div>
+    <h1>Lista de audios</h1>
+</div>
+
+{% for audios in lista %}
+    <div>
+        <p>Fecha de publicación: {{ audios.fecha_creacion }}</p>
+        <p>Participante : {{ audios.nombre }} {{ audios.apellidos }}</p>
+        <p>E-mail : {{ audios.email }}</p>
+        <p>Estado : {{ audios.estado }}</p>
+        <p>Observaciones : {{ audios.observaciones }}</p>
+        <p>Archivo Original</p>
+        <p><audio controls="controls" preload="none">
+            <source src= {% static audios.archivo_original.url %} type="audio/mpeg">
+        </audio>
+        {% if audios.estado == 'Convertido' %}
+            <p>Archivo Convertido</p>
+            <p><audio controls="controls" preload="none">
+                <source src= {% static audios.archivo_convertido.url %} type="audio/mpeg">
+            </audio>
+        {% endif %}
+    </div>
+
+{% endfor %}
+
+{% endblock%}

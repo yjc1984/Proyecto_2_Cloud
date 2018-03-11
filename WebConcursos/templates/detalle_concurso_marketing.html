@@ -1,0 +1,67 @@
+{% extends 'base_layout.html' %}
+{% block content%}
+    <h1>Detalle del Concurso</h1>
+
+{% for concurso in concurso %}
+{% load staticfiles  %}
+    <div>
+      <center>
+         <!-- <img src="{{concurso.ruta_imagen.url}}">-->
+         <img src={% static concurso.ruta_imagen.url %} width="300" height="200">
+      </center>
+    </div>
+    <div>
+       <table class="table table-hover table-sm">
+
+          <tr>
+            <th>Nombre</th>
+            <td>{{ concurso.nombre }}</td>
+          </tr>
+          <tr>
+            <th>Fecha Inicio</th>
+            <td>{{ concurso.fecha_inicio|date:"Y-m-d" }}</td>
+          </tr>
+          <tr>
+            <th>Fecha Fin</th>
+            <td>{{ concurso.fecha_fin|date:"Y-m-d" }}</td>
+          </tr>
+          <tr>
+            <th>Valor Pagar</th>
+            <td>{{ concurso.valor_pagar }}</td>
+          <tr>
+          <tr>
+            <th>Texto Voz</th>
+            <td>{{ concurso.texto_voz }}</td>
+          <tr>
+          <tr>
+            <th>Recomendaciones</th>
+            <td>{{ concurso.recomendaciones }}</td>
+          <tr>
+          <tr>
+            <th>URL Concurso asignada por sistema</th>
+            <td><a href="{{ concurso.url_concurso }}">{{ concurso.url_concurso }}</a></td>
+          <tr>
+          <tr>
+            <th>URL configurada por usuario</th>
+            <td><a href="{% url 'WebConcursos:resolver' url_usuario=concurso.url_concurso_custom %}">{{concurso.url_concurso_custom }}</a></td>
+          <tr>
+          <tr>
+            <th>Estado</th>
+            <td>{{ concurso.estado }}</td>
+          </tr>
+        </table>
+        <div>
+          <form class ='formularios' method='post' action="{% url 'WebConcursos:lista_de_audios_marketing' id_concurso=concurso.id  %}">
+            {% csrf_token %}
+            <p><input class="btn btn-primary my-2" type='submit' value='Escuchar Audios'/></p>
+          </form>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+      <form class ='formularios' method='post' action="{% url 'WebConcursos:home' %}">
+        {% csrf_token %}
+        <p><input class="btn btn-primary my-2" type='submit' value='Volver al home'/></p>
+      </form>
+    </div>
+{% endblock%}

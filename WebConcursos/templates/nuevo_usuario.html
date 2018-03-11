@@ -1,0 +1,29 @@
+{% extends 'base_layout.html' %}
+{% block content%}
+
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <h1>Creacion de Usuario</h1>
+    {% if messages %}
+	    {% for message in messages %}
+	    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+	    {% endfor %}
+	{% endif %}
+    <form class ='formularios' method='post' action="{% url 'WebConcursos:registro' %}">
+         {% csrf_token %}
+         {{formulario_registro.password1.errors}}
+         {{formulario_registro.password2.errors}}
+         {{formulario_registro.first_name.errors}}
+         {{formulario_registro.last_name.errors}}  
+         {{formulario_registro.username.errors}}       
+         <ul>Nombres</ul><ul>{{formulario_registro.first_name}} </ul>
+         <ul>Apellidos</ul><ul>{{formulario_registro.last_name}} </ul>
+	     <ul>Nombre de Usuario</ul><ul>{{formulario_registro.username}}(Por favor use su correo electronico) </ul>
+         <ul>Contraseña</ul><ul>{{formulario_registro.password1}}</ul>
+         <ul><li>Su contraseña no puede asemejarse tanto a su otra información personal.</li></ul>
+         <ul>Contraseña (confirmación):</ul><ul>{{formulario_registro.password2}}</ul>
+         Para verificar, ingrese la misma contraseña anterior.
+     
+	     <p><input class="btn btn-primary my-2" type='submit' value='Registrar'/></p>
+	  </form>
+
+{% endblock%}

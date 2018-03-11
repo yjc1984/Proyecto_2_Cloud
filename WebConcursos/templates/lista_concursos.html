@@ -1,0 +1,94 @@
+{% extends 'base_layout.html' %}
+  {% block content%}
+    <h1>Lista de Concursos</h1>
+    <div>
+      <p>Bienvenido! Estimado Usuario : {{ nombre_usuario }}  {{ apellido_usuario }} </p>
+      <p>Esta es la lista de concursos</p>
+    </div>
+    <div>
+      <table class="table table-hover table-sm">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Nombre Concurso</th>
+            <th>Borrar Concurso</th>
+            <th>Editar Concurso</th>
+            <th>Mensaje a Locutores</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for concurso in concursos%}
+            <tr>
+            <td><a href="{% url 'WebConcursos:detalle_concurso' id_concurso=concurso.id %}">{{ concurso.nombre }}</a></td>
+            <td>
+                  <form class ='formularios' action="{% url 'WebConcursos:borrar' id_concurso=concurso.id %}">
+                      {% csrf_token %}
+                      <input id="borrar" type='submit' value='Borrar'/>
+                  </form>
+            </td>
+            <td>
+                 <form class ='formularios' action="{% url 'WebConcursos:editar' id_concurso=concurso.id %}">
+                      {% csrf_token %}
+                      <input id="editar" type='submit' value='Editar'/>
+                  </form>
+            </td>
+              <td>
+                <form class ='formularios' action="{% url 'WebConcursos:enviaremail' id_concurso=concurso.id %}">
+                      {% csrf_token %}
+                      <input id="mail" type='submit' value='Enviar email'/>
+                 </form>
+                <p>Envie este concurso a su lista de locutores<p>
+
+                </td>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class = "opciones">
+       <form class ='formularios' method='get' action="{% url 'WebConcursos:crear_concurso' %}">
+        {% csrf_token %}
+          <input id="crear_c" class="btn btn-primary my-2" type='submit' value='Crear Concurso'/>
+      </form>
+      <form method='get' action="{% url 'WebConcursos:logout' %}">
+        {% csrf_token %}
+        <input class="btn btn-primary my-2" type='submit' value='Logout'/>
+      </form>
+      <form method='get' action="{% url 'WebConcursos:crear_locutor_lista' %}">
+        {% csrf_token %}
+        <input id="crear_l" class="btn btn-primary my-2" type='submit' value='Crear Locutor en Lista'/>
+      </form>
+      <form method='get' action="{% url 'WebConcursos:empresa' %}">
+        {% csrf_token %}
+        <input id="crear_r" class="btn btn-primary my-2" type='submit' value='Configurar Rol y Empresa'/>
+      </form>
+
+    </div>
+      {% for empresa in empresa %}
+        <p>Rol del Usuario: {{ empresa.Rol }} </p>  
+          {% if empresa.Rol != 'Administrador' %}
+             <script type="text/javascript">
+                /*document.getElementById('crear_c').disabled=true;
+                document.getElementById('crear_l').disabled=true;
+                document.getElementById('borrar').disabled=true;
+                document.getElementById('editar').disabled=true;
+                document.getElementById('mail').disabled=true;
+                d3.select("body").selectAll("#borrar").attr("disabled", "true");
+                d3.select("body").selectAll("#editar").attr("disabled", "true");
+                d3.select("body").selectAll("#mail").attr("disabled", "true");*/
+            </script>
+          {% else %}
+              <script type="text/javascript">
+               /* document.getElementById('crear_c').disabled=false;
+                document.getElementById('crear_l').disabled=false;
+                document.getElementById('borrar').disabled=false;
+                document.getElementById('editar').disabled=false;
+                document.getElementById('mail').disabled=false;
+                d3.select("body").selectAll("#borrar").attr("disabled", "false");
+                d3.select("body").selectAll("#editar").attr("disabled", "false");
+                d3.select("body").selectAll("#mail").attr("disabled", "false");*/
+            </script>
+          {% endif %}
+      {% endfor %}
+
+ 
+{% endblock%}

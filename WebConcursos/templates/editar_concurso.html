@@ -1,0 +1,69 @@
+{% extends 'base_layout.html' %}
+{% block content%}
+    <h1>Edicion del Concurso</h1>
+
+  {% for concurso in concursos  %}
+
+  <form id ='form_editar' method='POST' action="{% url 'WebConcursos:editar' id_concurso=concurso.id %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{formulario_edicion.errors.as_data}}
+      <div>
+      
+         <table contentEditable = 'true' class="table table-hover table-sm">     
+             <tr>
+              <th>Nombre Concurso</th>
+              <td>{{ formulario_edicion.nombre }}</td>
+            </tr>       
+            <tr>
+              <th>Fecha Inicio</th>
+              <td>{{ formulario_edicion.fecha_inicio }}</td>
+            </tr>
+            <tr>
+              <th>Fecha Fin</th>
+              <td>{{ formulario_edicion.fecha_fin }}</td>
+            </tr>
+             <tr>
+              <th>Imagen Banner</th>
+              <td>{{ formulario_edicion.ruta_imagen}}</td>
+            <tr>
+            <tr>
+              <th>Valor Pagar</th>
+              <td>{{ formulario_edicion.valor_pagar }}</td>
+            <tr>
+            <tr>
+              <th>Texto Voz</th>
+              <td>{{ formulario_edicion.texto_voz }}</td>
+            <tr>
+            <tr>
+              <th>Recomendaciones</th>
+              <td>{{ formulario_edicion.recomendaciones }}</td>
+            <tr>  
+            <tr>
+              <th>URL Custom Usuario</th>
+              <td>{{formulario_edicion.url_concurso_custom}}</td> 
+            </tr>    
+          </table>
+      </div>
+      <input id="boton_guardar" class="btn btn-primary my-2" type='submit' value='Guardar Cambios'/>
+  </form>
+    <div>
+      <form class ='formularios' method='post' action="{% url 'WebConcursos:lista_concursos' %}">
+        {% csrf_token %}
+        <p><input class="btn btn-primary my-2" type='submit' value='Cancelar'/></p>
+      </form>
+    </div>
+   <script type="text/javascript">
+        document.getElementById("id_nombre").value = "{{ concurso.nombre }}";
+        document.getElementById("fecha_inicio").value = "{{ concurso.fecha_inicio|date:"Y-m-d"}}";
+        document.getElementById("fecha_fin").value = "{{ concurso.fecha_fin|date:"Y-m-d" }}";
+        document.getElementById("id_valor_pagar").value = "{{ concurso.valor_pagar }}";
+        document.getElementById("id_texto_voz").value = "{{ concurso.texto_voz }}";
+        document.getElementById("id_recomendaciones").value = "{{ concurso.recomendaciones }}";
+        document.getElementById("id_url_concurso_custom").value = "{{ concurso.url_concurso_custom }}";
+        if (document.getElementById("id_url_concurso_custom").value === "None"){
+            console.log("Borrar None de la url")
+            document.getElementById("id_url_concurso_custom").value = "";
+        }
+   </script>
+  {% endfor %}
+{% endblock%}

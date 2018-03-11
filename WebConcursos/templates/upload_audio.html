@@ -1,0 +1,26 @@
+{% extends 'base_layout.html' %}
+
+{% block content%}
+
+  <h1>Enviar Audio</h1>
+  <p>Seleccione archivo a cargar</p>
+	<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit" class="btn btn-primary my-2">Enviar Voz</button>
+  </form>
+  <div>
+    <form  method='post' action="{% url 'WebConcursos:home' %}">
+      {% csrf_token %}
+      <p><input class="btn btn-primary my-2" type='submit' value='Volver'/></p>
+    </form>
+  </div>
+
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+
+{% endblock%}

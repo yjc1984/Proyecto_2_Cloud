@@ -1,0 +1,36 @@
+{% extends 'base_layout.html' %}
+
+{% block content%}
+{% load staticfiles  %}
+
+<div>
+    <h1>Lista de audios</h1>
+</div>
+
+{% for audios in lista %}
+    <div>
+        <p>Fecha de publicación: {{ audios.fecha_creacion }}</p>
+        <p>Participante : {{ audios.nombre }} {{ audios.apellidos }}</p>
+        <p>E-mail : {{ audios.email }}</p>
+        <p>Estado : {{ audios.email }}</p>
+        <p>Observaciones : {{ audios.estado }}</p>
+        {% if audios.estado == 'Convertido' %}
+            <p>Archivo Convertido</p>
+            <p><audio controls="controls" preload="none">
+                <source src= {% static audios.archivo_convertido.url %} type="audio/mpeg">
+            </audio>
+            <div>
+                {% if audios.seleccionado == 1 %}
+                    <p>Audio Seleccionado!</p>
+                {% endif %}
+              <form  method='post' action="{% url 'WebConcursos:seleccionar_audio' id_concurso=audios.id_concurso_id id_audio=audios.id %}">
+                  {% csrf_token %}
+                <p><input class="btn btn-primary my-2" type='submit' value='Seleccionar'/></p>
+              </form>
+            </div>
+        {% endif %}
+    </div>
+
+{% endfor %}
+
+{% endblock%}
