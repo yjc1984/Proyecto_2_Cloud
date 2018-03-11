@@ -74,23 +74,6 @@ WSGI_APPLICATION = 'concursos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'concursos',
-#        'USER': 'yeison',
-#        'PASSWORD': '',
-#        'HOST': 'localhost',
-#        'PORT': '',
-#    }
-#}
 
 
 DATABASES = {
@@ -156,13 +139,13 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/media/'
-#MEDIA_ROOT = 'D:/01_ESTUDIOS/MAESTRIA/4_APLICACIONES_CLOUD/Proyecto_1/media'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#MEDIA_URL = '/media/'
 
 EMAIL_USE_TLS = 'True'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'supervoices.cloud@gmail.com'
-EMAIL_HOST_PASSWORD = 'Domisoldo'
-EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'supervoices.cloud@gmail.com'
+
+EMAIL_BACKEND = os.environ['SES_EMAIL_BACKEND']
+EMAIL_HOST = os.environ['SES_EMAIL_HOST']
+EMAIL_PORT = os.environ['SES_EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['SES_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
