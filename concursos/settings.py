@@ -139,7 +139,10 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.environ['DIR_MEDIA_HOST']
 
 EMAIL_USE_TLS = 'True'
 DEFAULT_FROM_EMAIL = 'supervoices.cloud@gmail.com'
