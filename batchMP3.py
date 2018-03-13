@@ -4,13 +4,17 @@ import glob
 import shutil
 import smtplib
 
-import sqlite3
+import psycopg2
+import time
+
+print(time.strftime("%d/%m/%y"))
+print(time.strftime("%H:%M:%S"))
 
 #Paso 1 convertir los archivos wav a mp3
 print("-------------------------------------------------------------")
 print("Convirtiendo archivos WAV a MP3")
 print("-------------------------------------------------------------")
-wav_files = glob.glob('/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/*.wav')
+wav_files = glob.glob('/home/ubuntu/pablo/proyecto2_rds_ses/media/*.wav')
 for wav_file in wav_files:
 	print(wav_file)
 	mp3_file = os.path.splitext(wav_file)[0] + '.mp3'
@@ -18,11 +22,11 @@ for wav_file in wav_files:
 	sound = pydub.AudioSegment.from_wav(wav_file)
 	sound.export(mp3_file, format= "mp3")
 	#shutil.move(mp3_file, '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Proyecto_1_Total/SuperVoiceProject/media/')
-	shutil.move(wav_file, '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/procesados/')
+	shutil.move(wav_file, '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/')
 print("-------------------------------------------------------------")
 print("Convirtiendo archivos OGG a MP3")
 print("-------------------------------------------------------------")
-ogg_files = glob.glob('/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/*.ogg')
+ogg_files = glob.glob('/home/ubuntu/pablo/proyecto2_rds_ses/media/*.ogg')
 for ogg_file in ogg_files:
 	print(ogg_file)
 	mp3_file = os.path.splitext(ogg_file)[0] + '.mp3'
@@ -30,7 +34,7 @@ for ogg_file in ogg_files:
 	sound = pydub.AudioSegment.from_ogg(ogg_file)
 	sound.export(mp3_file, format= "mp3")
 	#shutil.move(mp3_file, 'D:/01_ESTUDIOS/MAESTRIA/4_APLICACIONES_CLOUD/Proyecto_1_to_mp3/archivos_aplicacion/mp3')
-	shutil.move(ogg_file, '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/procesados/')
+	shutil.move(ogg_file, '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/')
 
 print("--------------------------------------")
 print("FINALIZADO!!!!!!!!!!!")
@@ -41,7 +45,7 @@ print("--------------------------------------")
 print("-------------------------------------------------------------")
 print("VALIDACION DE ARCHIVOS Y COPIAS PARA CAMBIO DE ESTADO EN DB")
 print("-------------------------------------------------------------")
-path_procesados = '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/procesados/'
+path_procesados = '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/'
 lstFilesConvertir = []
 lstDirConvertir = os.walk(path_procesados)
 for root, dirs, files in lstDirConvertir:
@@ -50,7 +54,7 @@ for root, dirs, files in lstDirConvertir:
         if(extension != ".mp3"):
             lstFilesConvertir.append(nombreFichero+extension)
 
-path_generados = '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Sustentacion_1/Grupo08/media/'
+path_generados = '/home/ubuntu/pablo/proyecto2_rds_ses/media/'
 lstFilesMP3 = []
 lstDirMP3 = os.walk(path_generados)
 for root, dirs, files in lstDirMP3:
@@ -75,6 +79,10 @@ print("Mostrar en Pagina")
 print("--------------------------------------")
 
 
+user_db = os.environ["V_DATABASE_USER"]
+pass_db = os.environ["V_PASS_DATABASE"]
+
+
 contador = 0
 for i in range(0,len(lstFilesConvertir)): #buscar cada archivo a convertir en
     for j in range(0,len(lstFilesMP3)):   #los ya convertidos
@@ -89,30 +97,63 @@ for i in range(0,len(lstFilesConvertir)): #buscar cada archivo a convertir en
             if(contador>0):
                 print(lstFilesConvertir[i], "ya fue convertido a mp3 y tiene archivo original...cambiar estado en db")
                 cnotador=0
-                db = sqlite3.connect('db.sqlite3')
+                try:
+                    db = psycopg2.connect(host="concurso.cagp1b67sdkf.us-east-2.rds.amazonaws.com",database="concursos_db", user=user_db, password=pass_db)
+                    print("OK conexion establecida!!!!")
+                    cursor=db.cursor()
+                    #cursor.execute("""SELECT * FROM information_schema.tables WHERE table_schema = 'public'""")
+                    #for table in cursor.fetchall():
+                    #    print(table)
+                except psycopg2.Error as e:
+                    print(e.pgerror)
                 cursor = db.cursor()
                 archivo_original = lstFilesConvertir[i]
-                #print(archivo_original)
+                print(archivo_original)
                 archivo_convertido = lstFilesMP3[j]
-                #print(archivo_convertido)
-                cursor.execute("UPDATE WebConcursos_audiolocutor SET estado = 'Convertido',archivo_convertido = '%s' WHERE estado = 'En Proceso' AND archivo_original = '%s' " %(archivo_convertido,archivo_original))
+                print(archivo_convertido)
+
+                cursor.execute(""" SELECT archivo_original,archivo_convertido, estado
+                                   FROM "WebConcursos_audiolocutor"
+                                   WHERE estado = 'En Proceso' AND archivo_original = '%s' """ %(archivo_original))
+                for reg in cursor.fetchall():
+                   print(reg)
+                cursor.execute(""" UPDATE "WebConcursos_audiolocutor"
+                                   SET estado = 'Convertido',
+                                       archivo_convertido = '%s'
+                                   WHERE estado = 'En Proceso'
+                                   AND archivo_original = '%s' """ %(archivo_convertido,archivo_original))
+                #cursor.execute(""" SELECT * FROM "WebConcursos_audiolocutor" """)
+                #for concurso in cursor.fetchall():
+                #    print(concurso)
                 db.commit()
                 # Envio de mail
-                cursor.execute("SELECT email FROM WebConcursos_audiolocutor WHERE estado = 'Convertido' and archivo_convertido = '%s'"%archivo_convertido)
-                email = cursor.fetchall()
-                #print("Select",email)
-                #print("Inicio envio email")
-                remitente = "supervoices.cloud@gmail.com"
-                destinatario = email
-                asunto = "Aviso de procesamiento de audio"
-                encabezado = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (remitente, destinatario,asunto)
-                email = encabezado + "Hola! Te informamos que tu archivo de audio " + archivo_original + " a sido procesado con exito! "
-                #print("Cuerpo email",email)
-                smtp = smtplib.SMTP('smtp.gmail.com',587)
-                smtp.ehlo()
-                smtp.starttls()
-                smtp.ehlo()
-                smtp.login(remitente, "Domisoldo")
-                smtp.sendmail(remitente, destinatario, email)
-                smtp.close()
-db.close()
+                cursor.execute(""" SELECT email FROM "WebConcursos_audiolocutor"
+                                   WHERE estado = 'Convertido'
+                                   AND archivo_convertido = '%s' """ %(archivo_convertido))
+                lista = cursor.fetchall()
+
+                for indice in lista:
+                    print("Enviando correo a: ", indice[0])
+                    email_host=os.environ["SES_EMAIL_HOST"]
+                    email_port=os.environ["SES_EMAIL_PORT"]
+                    email_user=os.environ["SES_EMAIL_HOST_USER"]
+                    email_pass=os.environ["SES_EMAIL_HOST_PASSWORD"]
+                    smtp = smtplib.SMTP(email_host, email_port)
+                    remitente = 'supervoices.cloud@gmail.com'
+                    destinatario = indice[0]
+                    asunto = "Aviso de procesamiento de audio"
+                    encabezado = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (remitente, destinatario,asunto)
+                    email = encabezado + "Hola! Te informamos que tu archivo de audio " + archivo_original + " a sido procesado con exito! "
+                    smtp.starttls()
+                    smtp.ehlo()
+                    try:
+                        smtp.login(email_user, email_pass)
+                        print("Conectado")
+                    except smtplib.SMTPAuthenticationError as e:
+                        print(e.SMTPAuthenticationError)
+                    print("email: ", email)
+                    smtp.sendmail(remitente, destinatario, email)
+                    smtp.close()
+                db.close()
+                print(time.strftime("%d/%m/%y"))
+                print(time.strftime("%H:%M:%S"))
