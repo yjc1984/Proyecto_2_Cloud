@@ -14,19 +14,18 @@ print(time.strftime("%H:%M:%S"))
 print("-------------------------------------------------------------")
 print("Convirtiendo archivos WAV a MP3")
 print("-------------------------------------------------------------")
-wav_files = glob.glob('/home/ubuntu/pablo/proyecto2_rds_ses/media/*.wav')
+wav_files = glob.glob('/home/ubuntu/media/*.wav')
 for wav_file in wav_files:
 	print(wav_file)
 	mp3_file = os.path.splitext(wav_file)[0] + '.mp3'
 	print(mp3_file)
 	sound = pydub.AudioSegment.from_wav(wav_file)
 	sound.export(mp3_file, format= "mp3")
-	#shutil.move(mp3_file, '/Users/YJC/Desktop/Uniandes/Maestria/AplicacionesCloud/Proyectos/Proyecto_1_Total/SuperVoiceProject/media/')
-	shutil.move(wav_file, '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/')
+	shutil.move(wav_file, '/home/ubuntu/media/procesados/')
 print("-------------------------------------------------------------")
 print("Convirtiendo archivos OGG a MP3")
 print("-------------------------------------------------------------")
-ogg_files = glob.glob('/home/ubuntu/pablo/proyecto2_rds_ses/media/*.ogg')
+ogg_files = glob.glob('/home/ubuntu/media/*.ogg')
 for ogg_file in ogg_files:
 	print(ogg_file)
 	mp3_file = os.path.splitext(ogg_file)[0] + '.mp3'
@@ -34,7 +33,7 @@ for ogg_file in ogg_files:
 	sound = pydub.AudioSegment.from_ogg(ogg_file)
 	sound.export(mp3_file, format= "mp3")
 	#shutil.move(mp3_file, 'D:/01_ESTUDIOS/MAESTRIA/4_APLICACIONES_CLOUD/Proyecto_1_to_mp3/archivos_aplicacion/mp3')
-	shutil.move(ogg_file, '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/')
+	shutil.move(ogg_file, '/home/ubuntu/media/procesados/')
 
 print("--------------------------------------")
 print("FINALIZADO!!!!!!!!!!!")
@@ -45,7 +44,7 @@ print("--------------------------------------")
 print("-------------------------------------------------------------")
 print("VALIDACION DE ARCHIVOS Y COPIAS PARA CAMBIO DE ESTADO EN DB")
 print("-------------------------------------------------------------")
-path_procesados = '/home/ubuntu/pablo/proyecto2_rds_ses/media/procesados/'
+path_procesados = '/home/ubuntu/media/procesados/'
 lstFilesConvertir = []
 lstDirConvertir = os.walk(path_procesados)
 for root, dirs, files in lstDirConvertir:
@@ -54,7 +53,7 @@ for root, dirs, files in lstDirConvertir:
         if(extension != ".mp3"):
             lstFilesConvertir.append(nombreFichero+extension)
 
-path_generados = '/home/ubuntu/pablo/proyecto2_rds_ses/media/'
+path_generados = '/home/ubuntu/media/'
 lstFilesMP3 = []
 lstDirMP3 = os.walk(path_generados)
 for root, dirs, files in lstDirMP3:
@@ -79,8 +78,10 @@ print("Mostrar en Pagina")
 print("--------------------------------------")
 
 
-user_db = os.environ["V_DATABASE_USER"]
-pass_db = os.environ["V_PASS_DATABASE"]
+user_db = os.environ["RDS_USERNAME"]
+pass_db = os.environ["RDS_PASSWORD"]
+host_db = os.environ["RDS_HOSTNAME"]
+name_db = os.environ["RDS_DB_NAME"]
 
 
 contador = 0
@@ -98,12 +99,9 @@ for i in range(0,len(lstFilesConvertir)): #buscar cada archivo a convertir en
                 print(lstFilesConvertir[i], "ya fue convertido a mp3 y tiene archivo original...cambiar estado en db")
                 cnotador=0
                 try:
-                    db = psycopg2.connect(host="concurso.cagp1b67sdkf.us-east-2.rds.amazonaws.com",database="concursos_db", user=user_db, password=pass_db)
+                    db = psycopg2.connect(host=host_db,database=name_db, user=user_db, password=pass_db)
                     print("OK conexion establecida!!!!")
                     cursor=db.cursor()
-                    #cursor.execute("""SELECT * FROM information_schema.tables WHERE table_schema = 'public'""")
-                    #for table in cursor.fetchall():
-                    #    print(table)
                 except psycopg2.Error as e:
                     print(e.pgerror)
                 cursor = db.cursor()
