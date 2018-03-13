@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['VAR_SEC_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ['VAR_HOST_AWS']
+ALLOWED_HOSTS = [os.environ['VAR_HOST_AWS']]
 
 
 # Application definition
