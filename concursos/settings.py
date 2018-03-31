@@ -134,16 +134,12 @@ TEMPLATE_DIRS = [
 
 DATETIME_INPUT_FORMATS = '%Y-%m-%d'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "assets"),
-    os.path.join(BASE_DIR, "media"),
-]
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #STATIC_URL = '/static/media/'
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#MEDIA_ROOT = os.environ['DIR_MEDIA_HOST']
+#!!!!!!!!!!!!!
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.environ['DIR_MEDIA_HOST'] - este no
 
 EMAIL_USE_TLS = 'True'
 DEFAULT_FROM_EMAIL = 'supervoices.cloud@gmail.com'
@@ -156,6 +152,11 @@ EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
 
 # Adicion almacenamiento S3
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "media"),
+]
+
 AWS_ACCESS_KEY_ID = os.environ['S3_AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['S3_AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['S3_AWS_STORAGE_BUCKET_NAME']
@@ -165,9 +166,9 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-AWS_LOCATION = 'static'
+AWS_LOCATION = 'media'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage' # <-- here is where we reference it
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'WebConcursos.storage_backends.MediaStorage'
