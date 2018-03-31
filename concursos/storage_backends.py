@@ -12,8 +12,6 @@ class MediaStorage(S3Boto3Storage):
     location = settings.AWS_MEDIA_LOCATION
     file_overwrite = False
 
-class ProcesadosStorage(S3Boto3Storage):
-    location = settings.AWS_PROCESADOS_LOCATION
-#    default_acl = 'private'
+class PublicMediaStorage(S3Boto3Storage):
+    location = settings.AWS_PUBLIC_MEDIA_LOCATION
     file_overwrite = False
-#    custom_domain = False

@@ -183,5 +183,8 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 AWS_MEDIA_LOCATION = 'media'
 DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
 
-AWS_PROCESADOS_LOCATION = 'media/procesados'
-PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'
+#AWS_PROCESADOS_LOCATION = 'media/procesados'
+#PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'
+
+AWS_PUBLIC_MEDIA_LOCATION = 'media/procesados'
+DEFAULT_FILE_STORAGE = 'concursos.storage_backends.PublicMediaStorage'
