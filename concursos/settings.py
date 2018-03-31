@@ -138,7 +138,7 @@ DATETIME_INPUT_FORMATS = '%Y-%m-%d'
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #STATIC_URL = '/static/media/'
 #!!!!!!!!!!!!!
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #MEDIA_ROOT = os.environ['DIR_MEDIA_HOST'] - este no
 
 EMAIL_USE_TLS = 'True'
@@ -152,10 +152,10 @@ EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
 
 # Adicion almacenamiento S3
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "assets"),
-    os.path.join(BASE_DIR, "media"),
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, "assets"),
+#    os.path.join(BASE_DIR, "media"),
+#]
 
 AWS_ACCESS_KEY_ID = os.environ['S3_AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['S3_AWS_SECRET_ACCESS_KEY']
@@ -166,9 +166,22 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-AWS_LOCATION = 'media'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#AWS_LOCATION = 'media'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+#STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
+#DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
+
+###########
+
+
+AWS_STATIC_LOCATION = 'static'
+STATICFILES_STORAGE = 'concursos.storage_backends.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+
+AWS_MEDIA_LOCATION = 'media'
 DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
+
+AWS_PROCESADOS_LOCATION = 'media/procesados'
+PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'

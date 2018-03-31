@@ -5,6 +5,9 @@ from django.db.models.signals import post_save
 from django.urls import reverse
 from PIL import Image
 from .validators import validar_formato
+from django.conf import settings
+
+from concursos.storage_backends import ProcesadosStorage
 
 class Locutor(models.Model):
 
@@ -73,7 +76,7 @@ class AudioLocutor(models.Model):
     observaciones = models.CharField(max_length=1000)
     descripcion_audio = models.CharField(max_length=100,null=True)
     archivo_original = models.FileField(validators=[validar_formato],default = 'Null')
-    archivo_convertido = models.FileField(default = 'Null')
+    archivo_convertido = models.FileField(storage=ProcesadosStorage(),default = 'Null')
     estado = models.CharField(max_length=100,default='En Proceso')
     seleccionado = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(default=timezone.now)
@@ -84,7 +87,7 @@ class EmpresaRol(models.Model):
     ROLES = (
                 ('Administrador', 'Administrador'),
                 ('Marketing', 'Marketing'),
-    )    
+    )
     Empresa = models.CharField(max_length=200, blank=True, default='Asignar Empresa')
     Rol = models.CharField(max_length=200, blank=True, choices=ROLES, default='Administrador')
     id_usuario = models.ForeignKey(User,on_delete=models.CASCADE)
