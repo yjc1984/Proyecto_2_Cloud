@@ -7,7 +7,7 @@ from PIL import Image
 from .validators import validar_formato
 from django.conf import settings
 
-from concursos.storage_backends import PublicMediaStorage
+from concursos.storage_backends import PublicMediaStorage, MediaStorage
 
 class Locutor(models.Model):
 
@@ -75,7 +75,7 @@ class AudioLocutor(models.Model):
     email = models.EmailField(max_length=254)
     observaciones = models.CharField(max_length=1000)
     descripcion_audio = models.CharField(max_length=100,null=True)
-    archivo_original = models.FileField(validators=[validar_formato],default = 'Null')
+    archivo_original = models.FileField(storage=MediaStorage(),validators=[validar_formato],default = 'Null')
     archivo_convertido = models.FileField(storage=PublicMediaStorage(),default = 'Null')
     estado = models.CharField(max_length=100,default='En Proceso')
     seleccionado = models.BooleanField(default=False)
