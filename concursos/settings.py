@@ -138,7 +138,7 @@ DATETIME_INPUT_FORMATS = '%Y-%m-%d'
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #STATIC_URL = '/static/media/'
 #!!!!!!!!!!!!!
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #MEDIA_ROOT = os.environ['DIR_MEDIA_HOST'] - este no
 
 EMAIL_USE_TLS = 'True'
