@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'WebConcursos',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,20 @@ EMAIL_HOST = os.environ['SES_EMAIL_HOST']
 EMAIL_PORT = os.environ['SES_EMAIL_PORT']
 EMAIL_HOST_USER = os.environ['SES_EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
+
+# Adicion almacenamiento S3
+
+AWS_ACCESS_KEY_ID = os.environ['S3_AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['S3_AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['S3_AWS_STORAGE_BUCKET_NAME']
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'  # <-- here is where we reference it
