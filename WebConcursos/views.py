@@ -267,7 +267,7 @@ def enviar_audio(request,id_concurso):
                 print("Dentro del if archivo convertido")
                 audio = AudioLocutor.objects.get(id = p_id_audio)
                 audio.estado = "Convertido"
-				print(audio.archivo_original)
+                print(audio.archivo_original)
                 audio.archivo_convertido = audio.archivo_original
                 audio.save()
     else:
