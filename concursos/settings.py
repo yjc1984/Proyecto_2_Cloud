@@ -75,17 +75,30 @@ WSGI_APPLICATION = 'concursos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+###########################
+# Configuración BD
+###########################
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ['RDS_DB_NAME'],
+#        'USER': os.environ['RDS_USERNAME'],
+#        'PASSWORD': os.environ['RDS_PASSWORD'],
+#        'HOST': os.environ['RDS_HOSTNAME'],
+#        'PORT': os.environ['RDS_PORT'],
+#    }
+#}
+
+# MongoDB
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['RDS_DB_NAME'],
-        'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': os.environ['RDS_PASSWORD'],
-        'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],
-    }
+   'default': {
+       'ENGINE': 'djongo',
+       'NAME': os.environ['RDS_DB_NAME'],
+       'HOST': os.environ['MONGO_HOST_NAME'],
+       'PORT': os.environ['MONGO_PORT'],
+   }
 }
 
 # Password validation
@@ -140,6 +153,9 @@ DATETIME_INPUT_FORMATS = '%Y-%m-%d'
 #!!!!!!!!!!!!!
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #MEDIA_ROOT = os.environ['DIR_MEDIA_HOST'] - este no
+############################
+# Configuración EMAIL
+############################
 
 EMAIL_USE_TLS = 'True'
 DEFAULT_FROM_EMAIL = 'supervoices.cloud@gmail.com'
@@ -150,7 +166,9 @@ EMAIL_PORT = os.environ['SES_EMAIL_PORT']
 EMAIL_HOST_USER = os.environ['SES_EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
 
+#############################
 # Adicion almacenamiento S3
+#############################
 
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, "assets"),
