@@ -179,10 +179,10 @@ STATICFILES_STORAGE = 'concursos.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
 
 AWS_STATIC_LOCATION = 'static'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
 AWS_MEDIA_LOCATION = 'media'
 AWS_PRC_MEDIA_LOCATION = 'procesados'
+
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 
 #AWS_PROCESADOS_LOCATION = 'media/procesados'
 #PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'

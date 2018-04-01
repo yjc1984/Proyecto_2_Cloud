@@ -76,7 +76,7 @@ class AudioLocutor(models.Model):
     observaciones = models.CharField(max_length=1000)
     descripcion_audio = models.CharField(max_length=100,null=True)
     archivo_original = models.FileField(storage=MediaStorage(),validators=[validar_formato],default = 'Null')
-    archivo_convertido = models.FileField(storage=MediaStorage(),default = 'Null')
+    archivo_convertido = models.FileField(storage=PublicMediaStorage(),default = 'Null')
     estado = models.CharField(max_length=100,default='En Proceso')
     seleccionado = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(default=timezone.now)
