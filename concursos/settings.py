@@ -183,7 +183,7 @@ AWS_MEDIA_LOCATION = 'media'
 AWS_PRC_MEDIA_LOCATION = 'procesados'
 
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
+MEDIA_ROOT = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_MEDIA_LOCATION)
 #AWS_PROCESADOS_LOCATION = 'media/procesados'
 #PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'
 

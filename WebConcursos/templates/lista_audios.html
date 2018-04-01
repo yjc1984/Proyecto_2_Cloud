@@ -14,7 +14,7 @@
         <p>E-mail : {{ audios.email }}</p>
         <p>Observaciones : {{ audios.observaciones }}</p>
         <p><audio controls="controls" preload="none">
-            <source src= {% static media/audios.archivo_convertido.url %} type="audio/mpeg">
+            <source src= {% static audios.archivo_convertido.url %} type="audio/mpeg">
         </audio>
     </div>
 
