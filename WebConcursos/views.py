@@ -264,7 +264,7 @@ def enviar_audio(request,id_concurso):
             formato_archivo = str(request.FILES['archivo_original']).split('.')[1]
             nombre_archivo = str(request.FILES['archivo_original'])
             if formato_archivo == "mp3":
-                print("Dentro del if")
+                print("Dentro del if archivo convertido")
                 audio = AudioLocutor.objects.get(id = p_id_audio)
                 audio.estado = "Convertido"
                 audio.archivo_convertido = audio.archivo_original
