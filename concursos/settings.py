@@ -97,7 +97,7 @@ DATABASES = {
        'ENGINE': 'djongo',
        'NAME': os.environ['RDS_DB_NAME'],
        'HOST': os.environ['MONGO_HOST_NAME'],
-       'PORT': os.environ['MONGO_PORT'],
+#       'PORT': os.environ['MONGO_PORT'],
    }
 }
 
