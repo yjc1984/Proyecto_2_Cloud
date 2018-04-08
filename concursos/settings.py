@@ -187,7 +187,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 #AWS_LOCATION = 'media'
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+#STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 #DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
 
@@ -200,7 +200,7 @@ AWS_STATIC_LOCATION = 'static'
 AWS_MEDIA_LOCATION = 'media'
 AWS_PRC_MEDIA_LOCATION = '/media/procesados'
 
-#STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 MEDIA_ROOT = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_MEDIA_LOCATION)
 #AWS_PROCESADOS_LOCATION = 'media/procesados'
 #PRIVATE_FILE_STORAGE = 'concursos.storage_backends.ProcesadosStorage'
