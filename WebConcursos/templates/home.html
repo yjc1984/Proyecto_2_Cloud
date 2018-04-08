@@ -1,7 +1,6 @@
 {% extends 'base_layout.html' %}
 
 {% block content%}
-{% load staticfiles  %}
   <center>
   <h1>Bienvenidos a SuperVoices!!!!!!!!</h1>
   <p>Somos el banco de voces comerciales más completo en medios de comunicación</p>
@@ -22,7 +21,7 @@
      {% for concurso in concursos  %}
           {% if concurso.id_administrador.id == usuario.id %}
             <h2>{{concurso.nombre}}</h2>
-              <p><a href="{{concurso.url_concurso}}"><image width="300" height="200" src={% static concurso.ruta_imagen.url %}></a></p>
+              <p><a href="{{concurso.url_concurso}}"><image width="300" height="200" src={% concurso.ruta_imagen.url %}></a></p>
               <p>Ganate $ {{concurso.valor_pagar}}</p>
           {% endif %}
      {% endfor %}
