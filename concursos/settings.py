@@ -207,3 +207,18 @@ MEDIA_ROOT = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_MEDIA_LOCATION)
 
 
 #DEFAULT_FILE_STORAGE = 'concursos.storage_backends.PublicMediaStorage'
+
+# ElastiCache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': [
+            "elasticacheproyecto3.p9upho.0001.use1.cache.amazonaws.com:6379"
+        ],
+        'OPTIONS': {
+            'DB': 0,
+            'MASTER_CACHE': "elasticacheproyecto3.p9upho.0001.use1.cache.amazonaws.com:6379"
+        },
+    }
+}
