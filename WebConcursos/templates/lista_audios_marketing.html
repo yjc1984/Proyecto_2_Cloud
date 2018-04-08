@@ -17,7 +17,7 @@
         {% if audios.estado == 'Convertido' %}
             <p>Archivo Convertido</p>
             <p><audio controls="controls" preload="none">
-                <source src= {% static audios.archivo_convertido.url %} type="audio/mpeg">
+                <source src= {{audios.archivo_convertido.url}} type="audio/mpeg">
             </audio>
             <div>
                 {% if audios.seleccionado == 1 %}
