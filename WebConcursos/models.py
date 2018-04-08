@@ -53,7 +53,7 @@ class Concurso(models.Model):
     fecha_inicio = models.DateTimeField(blank=False)
     fecha_fin = models.DateTimeField(blank=False)
     valor_pagar = models.IntegerField()
-    ruta_imagen = models.ImageField(storage=MediaStorage(),blank=True,null=True)
+    ruta_imagen = models.ImageField(storage=StaticStorage(),blank=True,null=True)
     texto_voz = models.CharField(max_length=2000)
     recomendaciones = models.CharField(max_length=2000)
     url_concurso = models.URLField(null=True,blank=False,max_length=200)

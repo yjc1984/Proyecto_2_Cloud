@@ -22,7 +22,7 @@
      {% for concurso in concursos  %}
           {% if concurso.id_administrador.id == usuario.id %}
             <h2>{{concurso.nombre}}</h2>
-              <p><a href="{{concurso.url_concurso}}"><image width="300" height="200" src={% concurso.ruta_imagen.url %}></a></p>
+              <p><a href="{{concurso.url_concurso}}"><image width="300" height="200" src={% static %}></a></p>
               <p>Ganate $ {{concurso.valor_pagar}}</p>
           {% endif %}
      {% endfor %}
