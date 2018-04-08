@@ -11,6 +11,7 @@ from .models import Concurso, UsuarioCustom, ListaLocutores,AudioLocutor, Empres
 from WebConcursos.forms import UserCreationCustom
 from django.core.mail import EmailMessage, send_mail
 from django.core.files.storage import FileSystemStorage
+import boto3
 
 # Create your views here.
 #registrar usuarios: metodo usado para crear el usuario en la aplicacion
@@ -270,6 +271,8 @@ def enviar_audio(request,id_concurso):
                 print(audio.archivo_original)
                 audio.archivo_convertido = audio.archivo_original
                 audio.save()
+            # SQS
+            sqs_registrar_mensaje(str(p_id_audio), nombre_archivo)
     else:
         form = forms.FormularioEnvioAudio()
 
@@ -334,3 +337,27 @@ def RegistrarEmpresaView(request):
 		form_datos_empresa = forms.UserCreationRolEmpresa()
 		empresa = EmpresaRol.objects.all().filter(id_usuario = request.user.id)
 	return render(request,'empresa_rol.html',{'form_datos_empresa':form_datos_empresa, 'usuario':usuario, 'empresa':empresa})
+
+	# Manejo de colas SQS
+
+
+
+def sqs_registrar_mensaje(id_audio, archivo_original):
+    # Create SQS client
+    sqs = boto3.resource('sqs')
+    queue = sqs.get_queue_by_name(QueueName='sqs_concursos')
+    url_queue=queue.url
+    # Create a new message
+    response = queue.send_message(MessageBody='Registrando Mensaje',
+                                  MessageAttributes={
+                                                        'id_audio': {
+                                                                    'StringValue': id_audio,
+                                                                    'DataType': 'Number'
+                                                                    },
+                                                        'archivo_original': {
+                                                                    'StringValue': archivo_original,
+                                                                    'DataType': 'String'
+                                                                    }
+                                                    })
+    print(response.get('MessageId'))
+    print(response.get('MD5OfMessageBody'))
