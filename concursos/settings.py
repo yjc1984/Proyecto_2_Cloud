@@ -194,7 +194,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 ###########
 
 STATICFILES_STORAGE = 'concursos.storage_backends.StaticStorage'
-DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
+#DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
 
 AWS_STATIC_LOCATION = 'static'
 AWS_MEDIA_LOCATION = 'media'
