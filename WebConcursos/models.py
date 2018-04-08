@@ -7,7 +7,7 @@ from PIL import Image
 from .validators import validar_formato
 from django.conf import settings
 
-from concursos.storage_backends import ProcesadosStorage, MediaStorage
+from concursos.storage_backends import ProcesadosStorage, MediaStorage, StaticStorage
 
 class Locutor(models.Model):
 
