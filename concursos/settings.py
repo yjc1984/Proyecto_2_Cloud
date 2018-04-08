@@ -178,11 +178,18 @@ EMAIL_HOST_PASSWORD = os.environ['SES_EMAIL_HOST_PASSWORD']
 AWS_ACCESS_KEY_ID = os.environ['S3_AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['S3_AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['S3_AWS_STORAGE_BUCKET_NAME']
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+
+# CloudFront
+
+CLOUDFRONT_DOMAIN = os.environ['CFS3_CLOUDFRONT_DOMAIN'] #"your cloudfornt domain"
+CLOUDFRONT_ID = os.environ['CFS3_CLOUDFRONT_ID']#"your cloud front id"
+AWS_S3_CUSTOM_DOMAIN = os.environ['CFS3_CLOUDFRONT_DOMAIN']#"same as your cloud front domain" # to make sure the url that the files are served from this domain
+
 
 #AWS_LOCATION = 'media'
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -194,7 +201,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 ###########
 
 STATICFILES_STORAGE = 'concursos.storage_backends.StaticStorage'
-#DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
+DEFAULT_FILE_STORAGE = 'concursos.storage_backends.MediaStorage'
 
 AWS_STATIC_LOCATION = 'static'
 AWS_MEDIA_LOCATION = 'media'
@@ -214,11 +221,11 @@ CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         'LOCATION': [
-            "elasticacheproyecto3.p9upho.0001.use1.cache.amazonaws.com:6379"
+            os.environ['CACHE_LOC_NAME']
         ],
         'OPTIONS': {
             'DB': 0,
-            'MASTER_CACHE': "elasticacheproyecto3.p9upho.0001.use1.cache.amazonaws.com:6379"
+            'MASTER_CACHE': os.environ['CACHE_LOC_NAME']
         },
     }
 }
