@@ -12,6 +12,6 @@ class MediaStorage(S3Boto3Storage):
     location = settings.AWS_MEDIA_LOCATION
     file_overwrite = False
 
-class PublicMediaStorage(S3Boto3Storage):
+class ProcesadosStorage(S3Boto3Storage):
     location = settings.AWS_PRC_MEDIA_LOCATION
     file_overwrite = False

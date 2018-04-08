@@ -12,6 +12,7 @@ from WebConcursos.forms import UserCreationCustom
 from django.core.mail import EmailMessage, send_mail
 from django.core.files.storage import FileSystemStorage
 import boto3
+import shutil
 
 # Create your views here.
 #registrar usuarios: metodo usado para crear el usuario en la aplicacion
@@ -271,8 +272,10 @@ def enviar_audio(request,id_concurso):
                 print(audio.archivo_original)
                 audio.archivo_convertido = audio.archivo_original
                 audio.save()
+                #shutil.copy(nombre_archivo,'/procesados')
             # SQS
-            sqs_registrar_mensaje(str(p_id_audio), nombre_archivo)
+            else:
+                sqs_registrar_mensaje(str(p_id_audio), nombre_archivo)
     else:
         form = forms.FormularioEnvioAudio()
 
