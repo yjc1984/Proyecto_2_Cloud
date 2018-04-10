@@ -78,7 +78,7 @@ class AudioLocutor(models.Model):
     archivo_original = models.FileField(storage=MediaStorage(),validators=[validar_formato],default = 'Null')
     archivo_convertido = models.FileField(storage=MediaStorage(),default = 'Null')
     estado = models.CharField(max_length=100,default='En Proceso')
-    seleccionado = models.BooleanField(default=False)
+    #seleccionado = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(default=timezone.now)
     id_concurso = models.ForeignKey(Concurso, related_name='concurso',on_delete=models.CASCADE,default = 1)
 
